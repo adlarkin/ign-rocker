@@ -15,6 +15,8 @@ RUN apt-get -qq update && apt-get -y --no-install-recommends install \
     # used to install colcon and vcstool
     python3-pip \
     wget \
+    # xdg-utils allows for users to open remotery (profiler in ign-common) in Docker
+    xdg-utils
   && rm -rf /var/lib/apt/lists/*
 
 # set up repositories for Ignition
