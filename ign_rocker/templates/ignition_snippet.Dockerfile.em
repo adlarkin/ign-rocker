@@ -1,4 +1,4 @@
-# set up timezone since other packages (like colcon and firefox) need it
+# set up timezone since other packages (like firefox) need it
 RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install \
     tzdata \
   && rm -rf /var/lib/apt/lists/*
@@ -7,28 +7,27 @@ RUN apt-get -qq update && apt-get -y --no-install-recommends install \
     cppcheck \
     doxygen \
     firefox \
+    gcc \
     # need git in order to use vcstool
     git \
     gnupg \
     g++-8 \
     lsb-release \
-    # used to install colcon and vcstool
+    python3-dev \
+    # used to install colcon, vcstool and psutil
     python3-pip \
     wget \
     # xdg-utils allows for users to open remotery (profiler in ign-common) in Docker
-    xdg-utils
+    xdg-utils \
   && rm -rf /var/lib/apt/lists/*
 
 # set up repositories for Ignition
-# (adding nightlies just in case users want the newest Ignition version,
-# which is Edifice at the time of this writing)
 RUN sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list' \
-  && sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-nightly `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-nightly.list' \
   && wget http://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
 
-# install colcon and vcstool
-RUN pip3 install setuptools \
-  && pip3 install colcon-common-extensions vcstool
+# install colcon, vcstool and psutil (psutil is for sdformat memory leak tests)
+RUN pip3 install setuptools wheel \
+  && pip3 install colcon-common-extensions vcstool psutil
 
 # install the specified Ignition version
 RUN apt-get -qq update && apt-get -y --no-install-recommends install \
