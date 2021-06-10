@@ -22,7 +22,9 @@ RUN apt-get -qq update && apt-get -y --no-install-recommends install \
   && rm -rf /var/lib/apt/lists/*
 
 # set up repositories for Ignition
+# (add nightlies in case users want the newest Ignition version)
 RUN sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list' \
+  && sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-nightly `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-nightly.list' \
   && wget http://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
 
 # install colcon, vcstool and psutil (psutil is for sdformat memory leak tests)
