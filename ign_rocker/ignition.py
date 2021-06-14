@@ -11,7 +11,7 @@ class Ignition(RockerExtension):
 
     @staticmethod
     def get_releases():
-        return {'citadel', 'dome', 'edifice'}
+        return {'citadel', 'dome', 'edifice', 'fortress'}
 
     @staticmethod
     def get_OSs():
